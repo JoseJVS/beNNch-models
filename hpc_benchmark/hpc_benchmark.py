@@ -400,8 +400,9 @@ def run_simulation():
         vmsizes[presim_steps] = get_vmsize()
         vmpeaks[presim_steps] = get_vmpeak()
         vmrsss[presim_steps] = get_rss()
+        ks = nest.GetKernelStatus()
         for key in step_data_keys:
-            step_data[key][d] = getattr(nest, key)
+            step_data[key][d] = ks[key]
 
     if presim_remaining_time > 0:
         nest.Run(presim_remaining_time)
@@ -409,8 +410,9 @@ def run_simulation():
         vmsizes[presim_steps + sim_steps] = get_vmsize()
         vmpeaks[presim_steps + sim_steps] = get_vmpeak()
         vmrsss[presim_steps + sim_steps] = get_rss()
+        ks = nest.GetKernelStatus()
         for key in step_data_keys:
-            step_data[key][presim_steps] = getattr(nest, key)
+            step_data[key][presim_steps] = ks[key]
         presim_steps += 1
 
     PreparationTime = time.time() - tic
@@ -419,14 +421,16 @@ def run_simulation():
     for d in range(sim_steps):
         nest.Run(nest.min_delay)
         times[presim_steps + d] = time.time() - tic
+        ks = nest.GetKernelStatus()
         for key in step_data_keys:
-            step_data[key][presim_steps + d] = getattr(nest, key)
+            step_data[key][presim_steps + d] = ks[key]
 
     if sim_remaining_time > 0:
         nest.Run(sim_remaining_time)
         times[presim_steps + sim_steps] = time.time() - tic
+        ks = nest.GetKernelStatus()
         for key in step_data_keys:
-            step_data[key][presim_steps + sim_steps] = getattr(nest, key)
+            step_data[key][presim_steps + sim_steps] = ks[key]
         sim_steps += 1
 
     SimCPUTime = time.time() - tic
