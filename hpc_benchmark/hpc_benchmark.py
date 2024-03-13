@@ -394,12 +394,12 @@ def run_simulation():
     step_data = {key: np.empty(total_steps) for key in step_data_keys}
     tic = time.time()
 
-    nest.Simulate(params['presimtime'])
+    nest.Run(params['presimtime'])
 
     PreparationTime = time.time() - tic
     tic = time.time()
 
-    nest.Simulate(params['simtime'])
+    nest.Run(params['simtime'])
 
     SimCPUTime = time.time() - tic
     total_memory = str(get_vmsize())
