@@ -210,7 +210,8 @@ def build_network():
                           'rng_seed': params['rng_seed'],
                           'overwrite_files': True,
                           'use_compressed_spikes': params['compressed_spikes'],
-                          'keep_source_table': False})
+                          'keep_source_table': False,
+                          'spike_buffer_shrink_limit': 0.5})
     extra_params = {kwds}
     if extra_params:
         nest.SetKernelStatus(extra_params)
